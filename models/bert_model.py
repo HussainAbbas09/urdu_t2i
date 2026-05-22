@@ -571,28 +571,31 @@ def save_model(
 
 def load_model():
 
-    tokenizer = AutoTokenizer.from_pretrained(
-        MODEL_DIR
-    )
-
     model = BERTClassifier().to(DEVICE)
+
+    from huggingface_hub import hf_hub_download
+
+    model_path = hf_hub_download(
+        repo_id="HussainAbbas09/urdu-xlmr-model",
+        filename="classifier_weights.pt"
+    )
 
     model.load_state_dict(
         torch.load(
-            os.path.join(
-                MODEL_DIR,
-                "classifier_weights.pt"
-            ),
+            model_path,
             map_location=DEVICE
         )
     )
 
+    tokenizer = AutoTokenizer.from_pretrained(
+        BERT_MODEL_NAME
+    )
+
     model.eval()
 
-    print(f"[BERT] Loaded → {MODEL_DIR}")
+    print("[BERT] Loaded model from HF Hub")
 
     return model, tokenizer
-
 def is_saved():
 
     return os.path.exists(
