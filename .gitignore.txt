@@ -1,0 +1,9 @@
+dataset/
+results/
+__pycache__/
+.ipynb_checkpoints/
+*.csv
+*.ipynb
+*.log
+.cache/
+wandb/
